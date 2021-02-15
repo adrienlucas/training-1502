@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Movie description{% endblock %}
+
+{% block body %}
+    <div class="movie-description">
+    {{ should_highlight ? '<b>' }}
+    This is the "{{ movie_name }}" movie description.
+    {{ should_highlight ? '</b>' }}
+    </div>
+{% endblock %}
