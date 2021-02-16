@@ -1,7 +1,35 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomepageController!{% endblock %}
+{% block title %}
+    Homepage - {{ parent() }}
+{% endblock %}
+
+{% block stylesheets_sub '' %}
 
 {% block body %}
-<h1>Hello World</h1>
+
+    {{ render_esi(url('homepage_menu')) }}
+    {{ render_esi(controller('App\\Controller\\HomepageController::index')) }}
+{#    {{ include('homepage/menu.html.twig') }}#}
+
+    {% embed 'horizontal_blocks.html.twig' %}
+        {% block first %}
+            <h1>Hello World</h1>
+        {% endblock %}
+
+        {% block second %}
+
+            {% set movies = ['matrix', '', '1984', 'Alice', ''] %}
+
+            <ul>
+                {% for movie in movies|filter(movie => movie != '') %}
+
+                    <li>{{ movie }}</li>
+                {% else %}
+                    <li>No movies</li>
+                {% endfor %}
+            </ul>
+        {% endblock %}
+    {% endembed %}
+
 {% endblock %}

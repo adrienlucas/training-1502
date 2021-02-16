@@ -1,11 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Movie description{% endblock %}
+{% block stylesheets_sub_sub '' %}
+
+{% block title 'Movie description - ' ~ parent() %}
 
 {% block body %}
-    <div class="movie-description">
-    {{ should_highlight ? '<b>' }}
-    This is the "{{ movie_name }}" movie description.
-    {{ should_highlight ? '</b>' }}
-    </div>
+
+    {% embed 'vertical_blocks.html.twig' %}
+        {% block first %}
+            <h1>Movie description</h1>
+        {% endblock %}
+
+        {% block second %}
+
+            <div class="movie-description">
+                Title : {{ movie.title }} <br />
+                Release date : {{ movie.releaseDate|date('d/m/Y') }}<br />
+                Genre : {{ movie.genre }}
+            </div>
+        {% endblock %}
+    {% endembed %}
 {% endblock %}
