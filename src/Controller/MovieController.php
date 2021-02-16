@@ -2,20 +2,20 @@
 
 namespace App\Controller;
 
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MovieController extends AbstractController
 {
     #[Route('/movie/{id}', name: 'movie', requirements: ['id' => "\d+"])]
-    public function index(int $id, Request $request): Response
+    public function index(int $id): Response
     {
         $movies = [
-            1 => 'matrix',
-            2 => '1984',
-            3 => 'Alice in wonderland',
+            1 => ['title' => 'matrix', 'releaseDate' => new DateTime('1999-02-16'), 'genre' => 'Action'],
+            2 => ['title' => '1984', 'releaseDate' => new DateTime('1988-06-22'), 'genre' => 'Political'],
+            3 => ['title' => 'Alice in wonderland', 'releaseDate' => new DateTime('1964-01-05'), 'genre' => 'Cartoon'],
         ];
 
         if(!array_key_exists($id, $movies)) {
@@ -23,8 +23,7 @@ class MovieController extends AbstractController
         }
 
         return $this->render('movie/index.html.twig', [
-            'movie_name' => $movies[$id],
-            'should_highlight' => $request->query->get('highlight', false)
+            'movie' => $movies[$id],
         ]);
     }
 }
