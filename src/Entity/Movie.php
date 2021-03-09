@@ -4,33 +4,37 @@ namespace App\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity()
+ * @UniqueEntity("title")
  */
 class Movie
 {
     public function __construct(
         /**
-         * @ORM\Column(type="string", length=255)
+         * @ORM\Column(type="string", length=255, unique=true)
+         * @Assert\Length(min=3)
          */
-        public string $title,
+        public ?string $title = null,
 
         /**
          * @ORM\Column(type="date")
          */
-        public DateTime $releaseDate,
+        public ?DateTime $releaseDate = null,
 
         /**
          * @ORM\Column(type="string")
          */
-        public string $description,
+        public ?string $description = null,
 
         /**
          * @ORM\ManyToOne(targetEntity=Genre::class, inversedBy="movies")
          * @ORM\JoinColumn(nullable=false)
          */
-        public Genre $genre,
+        public ?Genre $genre = null,
     ) {
     }
 
@@ -40,5 +44,4 @@ class Movie
      * @ORM\Column(type="integer")
      */
     public int $id;
-
 }

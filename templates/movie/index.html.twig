@@ -4,6 +4,7 @@
 
 {% block title 'Movie description - ' ~ parent() %}
 
+
 {% block body %}
 
     {% embed 'vertical_blocks.html.twig' %}
@@ -16,7 +17,7 @@
             <div class="movie-description">
                 Title : {{ movie.title }} <br />
                 Release date : {{ movie.releaseDate|date('d/m/Y') }}<br />
-                Genre : {{ movie.genre }}
+                Genre : {{ movie.genre.name }}
             </div>
         {% endblock %}
     {% endembed %}

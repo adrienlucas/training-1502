@@ -2,28 +2,44 @@
 
 namespace App\Controller;
 
-use DateTime;
+use App\Entity\Movie;
+use App\Form\MovieType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MovieController extends AbstractController
 {
     #[Route('/movie/{id}', name: 'movie', requirements: ['id' => "\d+"])]
-    public function index(int $id): Response
+    public function index(Movie $movie): Response
     {
-        $movies = [
-            1 => ['title' => 'matrix', 'releaseDate' => new DateTime('1999-02-16'), 'genre' => 'Action'],
-            2 => ['title' => '1984', 'releaseDate' => new DateTime('1988-06-22'), 'genre' => 'Political'],
-            3 => ['title' => 'Alice in wonderland', 'releaseDate' => new DateTime('1964-01-05'), 'genre' => 'Cartoon'],
-        ];
+        return $this->render('movie/index.html.twig', [
+            'movie' => $movie,
+        ]);
+    }
 
-        if(!array_key_exists($id, $movies)) {
-            return new Response('Movie not found', 404);
+    #[Route('/movie/create', name: 'movie_create')]
+    public function create(Request $request): Response
+    {
+        $creationForm = $this->createForm(MovieType::class);
+
+        $creationForm->handleRequest($request);
+
+        if($creationForm->isSubmitted() && $creationForm->isValid()) {
+            $movie = $creationForm->getData();
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($movie);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'The movie has been persisted in database.');
+
+            return $this->redirectToRoute('homepage');
         }
 
-        return $this->render('movie/index.html.twig', [
-            'movie' => $movies[$id],
+        return $this->render('movie/create.html.twig', [
+            'creation_form' => $creationForm->createView(),
         ]);
     }
 }
