@@ -2,25 +2,21 @@
 
 namespace App\Controller;
 
+use App\Entity\Movie;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Stopwatch\Stopwatch;
 
 class HomepageController extends AbstractController
 {
-    public function __construct(
-        private EventDispatcherInterface $eventDispatcher
-    )
-    {
-    }
-
     #[Route('/', name: 'homepage')]
     public function index(): Response
     {
-        $this->eventDispatcher->dispatch();
-        return $this->render('homepage/index.html.twig');
+        $repository = $this->getDoctrine()->getManager()->getRepository(Movie::class);
+
+        return $this->render('homepage/index.html.twig', [
+            'movies' => $repository->findAll()
+        ]);
     }
 
     #[Route('/_fragment/menu_homepage', name: 'homepage_menu')]

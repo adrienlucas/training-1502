@@ -4,13 +4,13 @@
     Homepage - {{ parent() }}
 {% endblock %}
 
-{% block stylesheets_sub '' %}
 
 {% block body %}
+    {% for message in app.flashes('success') %}
+        {{ message }}
+    {% endfor %}
 
-    {{ render_esi(url('homepage_menu')) }}
-    {{ render_esi(controller('App\\Controller\\HomepageController::index')) }}
-{#    {{ include('homepage/menu.html.twig') }}#}
+    {{ render(controller('App\\Controller\\HomepageController::menu')) }}
 
     {% embed 'horizontal_blocks.html.twig' %}
         {% block first %}
@@ -19,12 +19,13 @@
 
         {% block second %}
 
-            {% set movies = ['matrix', '', '1984', 'Alice', ''] %}
-
             <ul>
-                {% for movie in movies|filter(movie => movie != '') %}
-
-                    <li>{{ movie }}</li>
+                {% for movie in movies %}
+                    <li>
+                        <a href="{{ path('movie', {id: movie.id}) }}">
+                            {{ movie.title }} ({{ movie.releaseDate|date('Y') }})
+                        </a>
+                    </li>
                 {% else %}
                     <li>No movies</li>
                 {% endfor %}

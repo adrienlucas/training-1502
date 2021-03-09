@@ -13,7 +13,12 @@ class MovieTest extends WebTestCase
     public function testItShowsAMovieFromTheCatalog(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/movie/1');
+        $client->request('GET', '/');
+
+        $this->assertSelectorExists('a[href*="/movie/"]');
+
+        $firstMovieLink = $client->getCrawler()->filter('a[href*="/movie/"]:first-child')->link();
+        $client->click($firstMovieLink);
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(
