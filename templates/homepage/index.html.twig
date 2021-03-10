@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Homepage - {{ parent() }}
+    {{ title is defined ? title : 'Homepage - '~ parent() }}
 {% endblock %}
 
 
@@ -14,7 +14,7 @@
 
     {% embed 'horizontal_blocks.html.twig' %}
         {% block first %}
-            <h1>Hello World</h1>
+            <h1>Hello {{ app.user is not null ? app.user.username : 'World' }}</h1>
         {% endblock %}
 
         {% block second %}

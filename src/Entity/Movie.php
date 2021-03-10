@@ -35,6 +35,16 @@ class Movie
          * @ORM\JoinColumn(nullable=false)
          */
         public ?Genre $genre = null,
+
+        /**
+         * @ORM\Column(type="string", nullable=true)
+         */
+        public ?string $imdbId = null,
+
+        /**
+         * @ORM\ManyToOne(targetEntity=User::class, inversedBy="createdMovies")
+         */
+        public ?User $creator = null,
     ) {
     }
 

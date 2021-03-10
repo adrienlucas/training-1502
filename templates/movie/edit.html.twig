@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {{ form_start(edition_form) }}
+        {{ form_rest(edition_form) }}
+        <input type="submit" />
+    {{ form_end(edition_form) }}
+
+{% endblock %}
+

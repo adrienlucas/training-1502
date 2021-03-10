@@ -18,6 +18,7 @@
                 Title : {{ movie.title }} <br />
                 Release date : {{ movie.releaseDate|date('d/m/Y') }}<br />
                 Genre : {{ movie.genre.name }}
+                <img src="{{ moviePosterUrl(movie) }}">
             </div>
         {% endblock %}
     {% endembed %}
